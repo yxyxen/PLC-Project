@@ -1,0 +1,13 @@
+(define filter
+  (lambda (p lst)
+    (if (null? lst)
+        '()
+        (if (p (fst lst))
+            (cons (fst lst) (filter p (snd lst)))
+            (filter p (snd lst))))))
+
+(define length
+  (lambda (lst)
+    (if (null? lst)
+        0
+        (add 1 (length (snd lst))))))

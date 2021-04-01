@@ -1,0 +1,17 @@
+(define +
+  (lambda xs (foldr add 0 xs)))
+
+(define -
+  (lambda xs
+     (if (null? (snd xs))
+         (sub 0 (fst xs))
+         (sub (fst xs) (foldr add 0 (snd xs))))))
+
+(define *
+  (lambda xs (foldr mul 1 xs)))
+
+(define /
+  (lambda xs
+    (if (null? (snd xs))
+        (div 1 (fst xs))
+        (foldl div (fst xs) (snd xs)))))

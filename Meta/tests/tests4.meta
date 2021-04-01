@@ -1,0 +1,33 @@
+;; Recursion and definition
+
+(define twice
+  (lambda (x)
+    (if (eq? x 0)
+        0
+        (add 2 (twice (sub x 1))))))
+
+(twice 0)
+
+(twice 8)
+
+(define curry
+  (lambda (f)
+    (lambda (x)
+      (lambda (y)
+        (f x y)))))
+
+(((curry add) 1) 2)
+
+(((curry sub) 2) 1)
+
+(define fib
+  (lambda (n)
+    (if (eq? n 0)
+        0
+        (if (eq? n 1)
+            1
+            (add (fib (sub n 1)) (fib (sub n 2)))))))
+
+(fib 8)
+
+(fib 10)

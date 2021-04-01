@@ -1,0 +1,100 @@
+;; Lambdas are a thing
+
+;; Your output for lambdas may be different from mine; I'm writing
+;; #<fun: env args body> and writing #<empty> for the empty
+;; environment
+
+(lambda () 1)                                                             ;; ==> #<fun: #<empty> () 1>
+
+(lambda (x y) x)                                                          ;; ==> #<fun: #<empty> (x y) x>
+
+(lambda (x y) (x y))                                                      ;; ==> #<fun: #<empty> (x y) (x y)>
+
+(lambda xs xs)                                                            ;; ==> #<fun: #<empty> xs xs>
+
+;; Applications are fun
+
+((lambda () 1))                                                           ;; ==> 1
+
+((lambda (x) x) 1)                                                        ;; ==> 1
+
+((lambda (x) 2) 1)                                                        ;; ==> 2
+
+((lambda (x y) x) 1 2)                                                    ;; ==> 1
+
+((lambda (x y) y) 1 2)                                                    ;; ==> 2
+
+((lambda (x y) (add x y)) 1 2)                                            ;; ==> 3
+
+((lambda (x y) (add x 1)) 1 2)                                            ;; ==> 2
+
+((lambda (x y z) (add y z)) 1 2 3)                                        ;; ==> 5
+
+((lambda (x y z) (add x y)) 1 2 3)                                        ;; ==> 3
+
+;; Nested applications are fun
+
+(((lambda (x) (lambda (y) x)) 1) 2)                                       ;; ==> 1
+
+(((lambda (x) (lambda (y) y)) 1) 2)                                       ;; ==> 2
+
+(((lambda (x) (lambda (y) (add x y))) 1) 2)                               ;; ==> 3
+
+((((lambda (x) (lambda (y) (lambda (z) z))) 1) 2) 3)                      ;; ==> 3
+
+((((lambda (x) (lambda (y) (lambda (z) (add (add x y) z)))) 1) 2) 3)      ;; ==> 6
+
+(((lambda (x y) (lambda (z) (add x z))) 1 2) 3)                           ;; ==> 4
+
+(((lambda (x y) (lambda (z) (add y z))) 1 2) 3)                           ;; ==> 5
+
+(((lambda (x) (lambda (y z) (add x z))) 1) 2 3)                           ;; ==> 4
+
+(((lambda (x) (lambda (y z) (add x y))) 1) 2 3)                           ;; ==> 3
+
+;; Higher-order functions are fun
+
+((lambda (f) (f 1)) (lambda (x) x))                                       ;; ==> 1
+
+((lambda (f) (f 1)) (lambda (x) (add x 1)))                               ;; ==> 2
+
+((lambda (f x) (f x)) (lambda (x) (add x 1)) 2)                           ;; ==> 3
+
+((lambda (x f) (f x)) 2 (lambda (x) (add x 1)))                           ;; ==> 3
+
+((lambda (f) (f (f 1))) (lambda (x) (add x 1)))                           ;; ==> 3
+
+((lambda (f x) (f (f x))) (lambda (x) (add x 1)) 2)                       ;; ==> 4
+
+((lambda (f x) (f x x)) (lambda (x y) (add x y)) 2)                       ;; ==> 4
+
+((lambda (f x) ((f x) x)) (lambda (x) (lambda (y) (add x y))) 2)          ;; ==> 4
+
+((lambda (f x y) (f x y)) (lambda (x y) (add x y)) 1 2)                   ;; ==> 3
+
+((lambda (f x y) (f y x)) (lambda (x y) (sub x y)) 1 2)                   ;; ==> 1
+
+;; Argument lists are fun
+
+(lambda args args)                                                        ;; ==> #<fun: #<empty> args args>
+
+((lambda args args) 1)                                                    ;; ==> (1)
+
+((lambda args args) 1 2)                                                  ;; ==> (1 2)
+
+((lambda args args) 1 2 3)                                                ;; ==> (1 2 3)
+
+((lambda args args))                                                      ;; ==> ()
+
+((lambda args (add (fst args) (fst (snd args)))) 1 2)                     ;; ==> 3
+
+((lambda args (add (fst args)
+                   (add (fst (snd args)) (fst (snd (snd args))))))
+ 1 2 3)                                                                   ;; ==> 6
+
+;; Dotted tails in argument lists are also fun
+
+((lambda (f g . args) (f (g (fst (snd args)))))
+ (lambda (x) (add x 1))
+ (lambda (x) (sub x 1))
+ 2 3)                                                                     ;; ==> 3

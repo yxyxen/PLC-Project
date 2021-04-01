@@ -1,0 +1,15 @@
+(tests
+ [(and (eq? 0 0) (eq? 1 1) (eq? 2 2)) #t]
+ [(and (eq? 0 0) (eq? 0 1) (eq? 2 2)) #f]
+
+ [(or (eq? 1 0) (eq? 0 1) (eq? 1 1)) #t]
+ [(or (eq? 1 0) (eq? 0 1) (eq? 1 2)) #f])
+
+(define quarter
+  (lambda (x)
+    (and (not (eq? x 0)) (/ x 4))))
+
+(tests
+ [(quarter 16) 4]
+ [(quarter 2)  0]
+ [(quarter 0)  #f])

@@ -1,0 +1,26 @@
+;; Macros are a thing
+
+;; Your output for macros may be different from mine; I'm writing
+;; #<fun: env args body> and writing #<empty> for the empty
+;; environment
+
+;; Many fewer tests here, because I'm assuming that you've got lambdas
+;; working.
+
+(macro (x) x)                                       ;; ==> #<macro #<empty> (x) x
+
+((macro (x) x) 1)                                   ;; ==> 1
+
+((macro (x) ',x) 1)                                 ;; ==> 1
+
+((macro (x) '',,x) y)                               ;; ==> y
+
+((macro (x) '',x) y)                                ;; ==> x
+
+((lambda (x) ((macro (x) x) 2)) 1)                  ;; ==> 2
+
+((lambda (x) ((macro (x) 'x) 2)) 1)                 ;; ==> 1
+
+((macro (cond alt cons)
+   '(if (if ,cond #f #t) ,cons ,alt))
+ #t (div 5 1) (div 5 0))                            ;; ==> 5

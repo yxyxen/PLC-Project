@@ -1,0 +1,90 @@
+;; This is a comment.  Ideally your parser knows to skip comments.
+
+;; Let's start with a bunch of constants.
+
+#t                                   ; ==> #t
+
+#f                                   ; ==> #f
+
+1                                    ; ==> 1
+
+14                                   ; ==> 14
+
+-2                                   ; ==> -2
+
+;; Now some primitive operations
+
+(add 1 2)                            ; ==> 3
+
+(sub 3 2)                            ; ==> 1
+
+(mul 3 4)                            ; ==> 12
+
+(mul -3 4)                           ; ==> -12
+
+;; Nesting primtive operations should be a thing
+
+(add 1 (add 2 3))                    ; ==> 6
+
+(sub 1 (add 3 4))                    ; ==> -6
+
+(mul (sub 0 3) (sub 0 4))            ; ==> 12
+
+;; Line breaks don't matter
+
+(add 1
+     (add 2 3))                      ; ==> 6
+
+(sub 1
+     (add 3 4))                      ; ==> -6
+
+;; Equality---applies to more than numbers, but let's start there
+
+(eq? (add 1 2) 3)                    ; ==> #t
+
+(eq? (sub 1 2) 3)                    ; ==> #f
+
+(eq? #t (sub 1 2))                   ; ==> #f
+
+(eq? #t #t)                          ; ==> #t
+
+(eq? #t (eq? #f #f))                 ; ==> #t
+
+;; Cons cells, if you've got them
+
+(cons 1 2)                           ; ==> (1 . 2)    you may print this out differently, that's fine.
+
+(cons 1 (cons 2 nil))                ; ==> (1 2)
+
+(cons 1 (cons 2 3))                  ; ==> (1 . (2 . 3)) or (1 2 . 3)
+
+(fst (cons 1 2))                     ; ==> 1
+
+(snd (cons 1 2))                     ; ==> 2
+
+(fst (snd (cons 1 (cons 2 nil))))
+                                     ; ==> 2
+
+;; Type tests
+
+(number? 1)                          ; ==> #t
+
+(number? #f)                         ; ==> #f
+
+(number? (cons 1 2))                 ; ==> #f
+
+(pair? 1)                            ; ==> #f
+
+(pair? (cons 1 2))                   ; ==> #t
+
+(pair? (cons 1 (cons 2 3)))          ; ==> #t
+
+(pair? (cons 1 (cons 2 nil)))        ; ==> #t
+
+(list? 1)                            ; ==> #f
+
+(list? (cons 1 2))                   ; ==> #f
+
+(list? (cons 1 (cons 2 3)))          ; ==> #f
+
+(list? (cons 1 (cons 2 nil)))        ; ==> #t

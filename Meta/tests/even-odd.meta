@@ -1,0 +1,12 @@
+(define even-odd
+  (cons (lambda (n) (if (eq? n 0) #t ((snd even-odd) (- n 1))))
+        (lambda (n) (if (eq? n 0) #f ((fst even-odd) (- n 1))))))
+
+(define even? (fst even-odd))
+(define odd?  (snd even-odd))
+
+(tests
+ [(even? 0) #t]
+ [(odd? 0)  #f]
+ [(even? 4) #t]
+ [(odd? 5)  #t])

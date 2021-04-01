@@ -1,0 +1,16 @@
+(define defun
+  (macro (nameAndArgs body)
+    '(define ,(fst nameAndArgs)
+      (lambda ,(snd nameAndArgs) ,body))))
+
+(define defmacro
+  (macro (nameAndArgs body)
+    '(define ,(fst nameAndArgs)
+      (macro ,(snd nameAndArgs) ,body))))
+
+(define let*
+  (macro (bindings body)
+    (foldr (lambda (thisBinding rest)
+          '(let ,thisBinding ,rest))
+          body
+          bindings)))

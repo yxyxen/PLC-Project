@@ -1,0 +1,10 @@
+(define silly
+  (lambda (n) (cond [(= n 0) '()]
+                    [(= n 1) '(())]
+                    [else '((()))])))
+
+(tests
+ [(silly 0) '()]
+ [(silly 1) '(())]
+ [(silly 2) '((()))]
+ [(silly 3) '((()))])

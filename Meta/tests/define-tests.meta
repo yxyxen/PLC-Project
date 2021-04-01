@@ -1,0 +1,17 @@
+(defun (id x) x)
+
+(tests
+ [(id 1) 1]
+ [(id 4) 4])
+
+(defun (list . args) args)
+
+(tests
+ [(list 1 2 3) '(1 2 3)]
+ [(list) '()])
+
+(defun (sum1 x . xs) (foldr add x xs))
+
+(tests
+ [(sum1 1 2 3) 6]
+ [(sum1 1) 1])

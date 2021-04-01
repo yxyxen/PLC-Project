@@ -1,0 +1,45 @@
+;; Quoting is a thing
+
+'x                                      ; ==> 'x
+
+'(1 2 3)                                ; ==> (1 2 3)
+
+'(x y)                                  ; ==> ('x 'y)
+
+'(1 . 2)                                ; ==> (1 . 2)
+
+'((1 . 2) . x)                          ; ==> ((1 . 2) . x)
+
+'(1 2 . 3)                              ; ==> (1 2 . 3))
+
+(fst '(1 2 3))                          ; ==> 1
+
+(snd '(1 2 3))                          ; ==> (2 3)
+
+(fst (snd '(1 2 3)))                    ; ==> 2
+
+(snd (snd '(1 2)))                      ; ==> ()
+
+''x                                     ; ==> ''x
+
+'(1 '(2 3))                             ; ==> (1 '(2 3))
+
+'(1 . (2 . ()))                         ; ==> (1 2)
+
+;; Unquoting is also a thing... I'm assuming here that you have (most of) the intrinsics implemented:
+
+'(1 2 ,3)                               ; ==> (1 2 3)
+
+'(x ,1 2)                               ; ==> ('x 1 2)
+
+'(x ,(add 2 3) y)                       ; ==> ('x 5 'y)
+
+'(x '(2 ,(add 2 3)))                    ; ==> ('x '(2 ('add 2 3)))
+
+'(x '(2 ,(add 2 3) ,,(add 2 3)))        ; ==> ('x '(2 ('add 2 3) 5))
+
+;; If you have eval implemented, you should be able to get the following:
+
+(eval '(add 1 2))                       ; ==> 3
+
+(eval '(add 1 ,(eval '(add 1 2))))      ; ==> 4

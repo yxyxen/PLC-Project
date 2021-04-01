@@ -1,0 +1,36 @@
+(define and
+  (macro args
+    (if (null? args) 
+        #t 
+        (foldr (lambda (thisTest rest)
+                  '(if ,thisTest
+                       ,rest
+                       ,thisTest))
+           (nth (sub (length args) 1) args)
+           args))))
+
+(define not
+  (lambda (x)
+    (if x
+        #f
+        #t)))
+
+(define or
+  (macro args
+    (foldr (lambda (thisTest rest)
+             '(if ,thisTest
+                  ,thisTest
+                  ,rest))
+           #f
+           args)))
+
+(define cond
+  ((lambda (else) (macro args
+    (foldr (lambda (thisTest rest)
+            '(if ,(fst thisTest)
+                  ,(fst (snd thisTest))
+                  ,rest))
+           #f
+           args))) #t))
+
+(define = (lambda (x y) (eq? x y)))
